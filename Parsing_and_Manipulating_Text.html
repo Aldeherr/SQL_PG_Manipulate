@@ -1,0 +1,1169 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Parsing and Manipulating Text &#8212; Functions for Manipulating Data in PostgreSQL</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Full-text Search and PostgresSQL Extensions" href="Full-text_Search_and_PostgresSQL_Extensions.html" />
+    <link rel="prev" title="Common Data Types" href="Working_with_DATETIME_Functions_and_Operators.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Functions for Manipulating Data in PostgreSQL</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Bienvenido al Curso de Functions for Manipulating Data in PostgreSQL 
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Overview_of_basic_arithmetic_operators.html">
+   Date/Time Functions and Operators
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Working_with_DATETIME_Functions_and_Operators.html">
+   Common Data Types
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Parsing and Manipulating Text
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Full-text_Search_and_PostgresSQL_Extensions.html">
+   Full-text Search and PostgresSQL Extensions
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/docs/Parsing_and_Manipulating_Text.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/executablebooks/jupyter-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FParsing_and_Manipulating_Text.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/Parsing_and_Manipulating_Text.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reformatting-string-and-character-data">
+   Reformatting string and character data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#analisis-de-cadenas-de-texto">
+   Analisis de cadenas de texto
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#truncar-y-espaciar-string-data">
+   Truncar y espaciar String Data
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Parsing and Manipulating Text</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reformatting-string-and-character-data">
+   Reformatting string and character data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#analisis-de-cadenas-de-texto">
+   Analisis de cadenas de texto
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#truncar-y-espaciar-string-data">
+   Truncar y espaciar String Data
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="parsing-and-manipulating-text">
+<h1>Parsing and Manipulating Text<a class="headerlink" href="#parsing-and-manipulating-text" title="Permalink to this headline">#</a></h1>
+<hr class="docutils" />
+<section id="reformatting-string-and-character-data">
+<h2>Reformatting string and character data<a class="headerlink" href="#reformatting-string-and-character-data" title="Permalink to this headline">#</a></h2>
+<p>Convertir cadenas de texto u manejarlas segun nuestras necesidades es tambien parte de los motores de base de datos. Por ello, postgresql incluye clausulas y operadores para este tipo de datos.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">||</span></code> operator: podemos concatenar cadenas de texto escribiendo el doble pipe operator. E.g:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">first_name</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">last_name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">customer</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CONCAT(</span> <span class="pre">first_element,</span> <span class="pre">sec_elem,</span> <span class="pre">...)</span></code>: la funcion concatena las diferentes cadenas de texto.</p></li>
+</ul>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">CONCAT</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="n">last_name</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="p">,</span><span class="n">email</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">UPPER(email)</span></code>: retorna una cadena con mayusculas</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LOWER(email)</span></code>:  retorna una cadena en minusculas</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INITCAP(email)</span></code>: retorna la cadena inicial con mayusculas</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">REPLACE(source</span> <span class="pre">,</span> <span class="pre">'string</span> <span class="pre">to</span> <span class="pre">replace',</span> <span class="pre">'new</span> <span class="pre">string')</span></code>: reemplaza una cadena de texto por otra.</p></li>
+</ul>
+<hr class="docutils" />
+<p>LINEAS DE CONFIGURACION</p>
+<hr class="docutils" />
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlalchemy</span> <span class="k">as</span> <span class="nn">sqla</span>
+
+<span class="n">engine</span> <span class="o">=</span> <span class="n">sqla</span><span class="o">.</span><span class="n">create_engine</span><span class="p">(</span><span class="s1">&#39;postgresql://postgres:Panama2021@localhost:5433/dvdrental&#39;</span><span class="p">)</span>
+
+<span class="o">%</span><span class="k">load_ext</span> sql
+<span class="o">%</span><span class="k">sql</span> $engine.url
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Connected: postgres@dvdrental&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT customer_id || &#39;: &#39; || first_name || &#39; &#39; || last_name AS ID_NAME  FROM customer LIMIT 5
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+5 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>id_name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>524: Jared Ely</td>
+        </tr>
+        <tr>
+            <td>1: Mary Smith</td>
+        </tr>
+        <tr>
+            <td>2: Patricia Johnson</td>
+        </tr>
+        <tr>
+            <td>3: Linda Williams</td>
+        </tr>
+        <tr>
+            <td>4: Barbara Jones</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT CONCAT(first_name, &#39; &#39;, last_name) FROM customer LIMIT 5
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+5 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>concat</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Jared Ely</td>
+        </tr>
+        <tr>
+            <td>Mary Smith</td>
+        </tr>
+        <tr>
+            <td>Patricia Johnson</td>
+        </tr>
+        <tr>
+            <td>Linda Williams</td>
+        </tr>
+        <tr>
+            <td>Barbara Jones</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT UPPER (first_name || &#39; &#39; || last_name) as NAME_UPP FROM customer LIMIT 5
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+5 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>name_upp</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>JARED ELY</td>
+        </tr>
+        <tr>
+            <td>MARY SMITH</td>
+        </tr>
+        <tr>
+            <td>PATRICIA JOHNSON</td>
+        </tr>
+        <tr>
+            <td>LINDA WILLIAMS</td>
+        </tr>
+        <tr>
+            <td>BARBARA JONES</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT LOWER (first_name || &#39; &#39; || last_name) as NAME_UPP FROM customer LIMIT 5
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+5 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>name_upp</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>jared ely</td>
+        </tr>
+        <tr>
+            <td>mary smith</td>
+        </tr>
+        <tr>
+            <td>patricia johnson</td>
+        </tr>
+        <tr>
+            <td>linda williams</td>
+        </tr>
+        <tr>
+            <td>barbara jones</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT INITCAP(title) FROM film limit 10
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+10 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>initcap</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Chamber Italian</td>
+        </tr>
+        <tr>
+            <td>Grosse Wonderful</td>
+        </tr>
+        <tr>
+            <td>Airport Pollock</td>
+        </tr>
+        <tr>
+            <td>Bright Encounters</td>
+        </tr>
+        <tr>
+            <td>African Egg</td>
+        </tr>
+        <tr>
+            <td>Agent Truman</td>
+        </tr>
+        <tr>
+            <td>Airplane Sierra</td>
+        </tr>
+        <tr>
+            <td>Alabama Devil</td>
+        </tr>
+        <tr>
+            <td>Aladdin Calendar</td>
+        </tr>
+        <tr>
+            <td>Alamo Videotape</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT description, REPLACE(description, &#39; &#39;, &#39;&#39;) FROM film limit 10
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+10 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>description</th>
+            <th>replace</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>A Fateful Reflection of a Moose And a Husband who must Overcome a Monkey in Nigeria</td>
+            <td>AFatefulReflectionofaMooseAndaHusbandwhomustOvercomeaMonkeyinNigeria</td>
+        </tr>
+        <tr>
+            <td>A Epic Drama of a Cat And a Explorer who must Redeem a Moose in Australia</td>
+            <td>AEpicDramaofaCatAndaExplorerwhomustRedeemaMooseinAustralia</td>
+        </tr>
+        <tr>
+            <td>A Epic Tale of a Moose And a Girl who must Confront a Monkey in Ancient India</td>
+            <td>AEpicTaleofaMooseAndaGirlwhomustConfrontaMonkeyinAncientIndia</td>
+        </tr>
+        <tr>
+            <td>A Fateful Yarn of a Lumberjack And a Feminist who must Conquer a Student in A Jet Boat</td>
+            <td>AFatefulYarnofaLumberjackAndaFeministwhomustConqueraStudentinAJetBoat</td>
+        </tr>
+        <tr>
+            <td>A Fast-Paced Documentary of a Pastry Chef And a Dentist who must Pursue a Forensic Psychologist in The Gulf of Mexico</td>
+            <td>AFast-PacedDocumentaryofaPastryChefAndaDentistwhomustPursueaForensicPsychologistinTheGulfofMexico</td>
+        </tr>
+        <tr>
+            <td>A Intrepid Panorama of a Robot And a Boy who must Escape a Sumo Wrestler in Ancient China</td>
+            <td>AIntrepidPanoramaofaRobotAndaBoywhomustEscapeaSumoWrestlerinAncientChina</td>
+        </tr>
+        <tr>
+            <td>A Touching Saga of a Hunter And a Butler who must Discover a Butler in A Jet Boat</td>
+            <td>ATouchingSagaofaHunterAndaButlerwhomustDiscoveraButlerinAJetBoat</td>
+        </tr>
+        <tr>
+            <td>A Thoughtful Panorama of a Database Administrator And a Mad Scientist who must Outgun a Mad Scientist in A Jet Boat</td>
+            <td>AThoughtfulPanoramaofaDatabaseAdministratorAndaMadScientistwhomustOutgunaMadScientistinAJetBoat</td>
+        </tr>
+        <tr>
+            <td>A Action-Packed Tale of a Man And a Lumberjack who must Reach a Feminist in Ancient China</td>
+            <td>AAction-PackedTaleofaManAndaLumberjackwhomustReachaFeministinAncientChina</td>
+        </tr>
+        <tr>
+            <td>A Boring Epistle of a Butler And a Cat who must Fight a Pastry Chef in A MySQL Convention</td>
+            <td>ABoringEpistleofaButlerAndaCatwhomustFightaPastryChefinAMySQLConvention</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### REVERSE</span>
+
+<span class="o">%</span><span class="k">sql</span> SELECT REVERSE(description) FROM film limit 5
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+5 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>reverse</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>airegiN ni yeknoM a emocrevO tsum ohw dnabsuH a dnA esooM a fo noitcelfeR lufetaF A</td>
+        </tr>
+        <tr>
+            <td>ailartsuA ni esooM a meedeR tsum ohw rerolpxE a dnA taC a fo amarD cipE A</td>
+        </tr>
+        <tr>
+            <td>aidnI tneicnA ni yeknoM a tnorfnoC tsum ohw lriG a dnA esooM a fo elaT cipE A</td>
+        </tr>
+        <tr>
+            <td>taoB teJ A ni tnedutS a reuqnoC tsum ohw tsinimeF a dnA kcajrebmuL a fo nraY lufetaF A</td>
+        </tr>
+        <tr>
+            <td>ocixeM fo fluG ehT ni tsigolohcysP cisneroF a eusruP tsum ohw tsitneD a dnA fehC yrtsaP a fo yratnemucoD decaP-tsaF A</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+</section>
+<section id="analisis-de-cadenas-de-texto">
+<h2>Analisis de cadenas de texto<a class="headerlink" href="#analisis-de-cadenas-de-texto" title="Permalink to this headline">#</a></h2>
+<p>Las cadenas de texto tambien pueden ser manejadas a nivel de numero de caracteres; en ocasiones podemos necesitar solamente el el dominio de usuario de un correo electronico o separar textos hasta el siguiente punto.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CHAR_LENGTH</span></code>: devuelve la cantiad de caracteres</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LENGTH(source)</span></code>: es igual a char_length</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LEFT(source,</span> <span class="pre">n)</span></code>: cuenta desde izquierda a derecha (n) cantidad de caracteres</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RIGHT(source,</span> <span class="pre">n)</span></code>: cuenta desde derecha a izquierda (n) cantidad de caracteres</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">POSITION(&#64;</span> <span class="pre">IN</span> <span class="pre">email)</span></code>: devuelve la posicion de <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> (arroba) dentro del source <strong>email</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STRPOS</span> <span class="pre">(email,</span> <span class="pre">'&#64;')</span></code>: devuelve la posicion de <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> dentro del source <strong>email</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SUBSTRING(source,</span> <span class="pre">10,50)</span></code>: devuelve los caracteres desde 10 a 50 del source column.</p></li>
+</ul>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">--SUBSTRING tambien acepta la clausula FROM x FOR x</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">SUBSTRNG</span><span class="p">(</span><span class="w"> </span><span class="n">email</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="k">POSITION</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="n">email</span><span class="p">))</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SUBSTR(source,10,50)</span></code>: es una funcion analoga a <code class="docutils literal notranslate"><span class="pre">SUBSTRING</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT description ,LENGTH(description) as Tamanio FROM film LIMIT 5
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+5 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>description</th>
+            <th>tamanio</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>A Fateful Reflection of a Moose And a Husband who must Overcome a Monkey in Nigeria</td>
+            <td>83</td>
+        </tr>
+        <tr>
+            <td>A Epic Drama of a Cat And a Explorer who must Redeem a Moose in Australia</td>
+            <td>73</td>
+        </tr>
+        <tr>
+            <td>A Epic Tale of a Moose And a Girl who must Confront a Monkey in Ancient India</td>
+            <td>77</td>
+        </tr>
+        <tr>
+            <td>A Fateful Yarn of a Lumberjack And a Feminist who must Conquer a Student in A Jet Boat</td>
+            <td>86</td>
+        </tr>
+        <tr>
+            <td>A Fast-Paced Documentary of a Pastry Chef And a Dentist who must Pursue a Forensic Psychologist in The Gulf of Mexico</td>
+            <td>117</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT description ,LEFT(description, 15) as Tamanio FROM film LIMIT 5
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+5 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>description</th>
+            <th>tamanio</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>A Fateful Reflection of a Moose And a Husband who must Overcome a Monkey in Nigeria</td>
+            <td>A Fateful Refle</td>
+        </tr>
+        <tr>
+            <td>A Epic Drama of a Cat And a Explorer who must Redeem a Moose in Australia</td>
+            <td>A Epic Drama of</td>
+        </tr>
+        <tr>
+            <td>A Epic Tale of a Moose And a Girl who must Confront a Monkey in Ancient India</td>
+            <td>A Epic Tale of </td>
+        </tr>
+        <tr>
+            <td>A Fateful Yarn of a Lumberjack And a Feminist who must Conquer a Student in A Jet Boat</td>
+            <td>A Fateful Yarn </td>
+        </tr>
+        <tr>
+            <td>A Fast-Paced Documentary of a Pastry Chef And a Dentist who must Pursue a Forensic Psychologist in The Gulf of Mexico</td>
+            <td>A Fast-Paced Do</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT description ,RIGHT(description, 15) as Tamanio FROM film LIMIT 5
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+5 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>description</th>
+            <th>tamanio</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>A Fateful Reflection of a Moose And a Husband who must Overcome a Monkey in Nigeria</td>
+            <td>nkey in Nigeria</td>
+        </tr>
+        <tr>
+            <td>A Epic Drama of a Cat And a Explorer who must Redeem a Moose in Australia</td>
+            <td>se in Australia</td>
+        </tr>
+        <tr>
+            <td>A Epic Tale of a Moose And a Girl who must Confront a Monkey in Ancient India</td>
+            <td>n Ancient India</td>
+        </tr>
+        <tr>
+            <td>A Fateful Yarn of a Lumberjack And a Feminist who must Conquer a Student in A Jet Boat</td>
+            <td>t in A Jet Boat</td>
+        </tr>
+        <tr>
+            <td>A Fast-Paced Documentary of a Pastry Chef And a Dentist who must Pursue a Forensic Psychologist in The Gulf of Mexico</td>
+            <td> Gulf of Mexico</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT POSITION(&#39;@&#39; IN email) FROM customer limit 5
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+5 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>position</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>11</td>
+        </tr>
+        <tr>
+            <td>17</td>
+        </tr>
+        <tr>
+            <td>15</td>
+        </tr>
+        <tr>
+            <td>14</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># GETTING </span>
+<span class="o">%</span><span class="k">sql</span> SELECT SUBSTRING ( email FROM 0 FOR POSITION(&#39;@&#39; IN EMAIL)) AS USER, email FROM customer LIMIT 10
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+10 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>user</th>
+            <th>email</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>jared.ely</td>
+            <td>jared.ely@sakilacustomer.org</td>
+        </tr>
+        <tr>
+            <td>mary.smith</td>
+            <td>mary.smith@sakilacustomer.org</td>
+        </tr>
+        <tr>
+            <td>patricia.johnson</td>
+            <td>patricia.johnson@sakilacustomer.org</td>
+        </tr>
+        <tr>
+            <td>linda.williams</td>
+            <td>linda.williams@sakilacustomer.org</td>
+        </tr>
+        <tr>
+            <td>barbara.jones</td>
+            <td>barbara.jones@sakilacustomer.org</td>
+        </tr>
+        <tr>
+            <td>elizabeth.brown</td>
+            <td>elizabeth.brown@sakilacustomer.org</td>
+        </tr>
+        <tr>
+            <td>jennifer.davis</td>
+            <td>jennifer.davis@sakilacustomer.org</td>
+        </tr>
+        <tr>
+            <td>maria.miller</td>
+            <td>maria.miller@sakilacustomer.org</td>
+        </tr>
+        <tr>
+            <td>susan.wilson</td>
+            <td>susan.wilson@sakilacustomer.org</td>
+        </tr>
+        <tr>
+            <td>margaret.moore</td>
+            <td>margaret.moore@sakilacustomer.org</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+</section>
+<section id="truncar-y-espaciar-string-data">
+<h2>Truncar y espaciar String Data<a class="headerlink" href="#truncar-y-espaciar-string-data" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TRIM(</span> <span class="pre">[</span> <span class="pre">leading|</span> <span class="pre">trailing</span> <span class="pre">|</span> <span class="pre">both</span> <span class="pre">]</span> <span class="pre">[character]</span> <span class="pre">FROM</span> <span class="pre">string)</span></code></p>
+<ul>
+<li><p>Primer parametro: el primer parametro es <strong>opcional</strong> y por default tiene el valor de <strong>both</strong></p></li>
+<li><p>Segundo parametro: es el caracter que sera eliminado de la cadena es <strong>opcional</strong>.</p></li>
+<li><p>Tercer parametro: es la cadena sobre la cual actuaremos</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LTRIM</span></code>: buscamos todos los espacios en blanco de izquierda a derecha.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTRIM</span></code>: buscamos todos los espacios en blanco de derecha a izquierda.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LPAD(string,</span> <span class="pre">n,</span> <span class="pre">caracter)</span></code>: agregara a la izquierda una determinada cantidad de caracteres para resultar en un total de <code class="docutils literal notranslate"><span class="pre">n</span></code> caracteres, si no especificamos el <code class="docutils literal notranslate"><span class="pre">caracter</span></code> se agrega solamente un espacio en blanco <code class="docutils literal notranslate"><span class="pre">('</span> <span class="pre">')</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RPAD(string,</span> <span class="pre">n,</span> <span class="pre">caracter)</span></code>: agregara a la derecha una determinada cantidad de caracteres para resultar en un total de <code class="docutils literal notranslate"><span class="pre">n</span></code> caracteres, si no especificamos el <code class="docutils literal notranslate"><span class="pre">caracter</span></code> se agrega solamente un espacio en blanco <code class="docutils literal notranslate"><span class="pre">('</span> <span class="pre">')</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#BUSCARA el caracter # desde el inicio y lo eliminara </span>
+<span class="o">%</span><span class="k">sql</span> SELECT TRIM( LEADING &#39;#&#39; FROM  &#39;#__#__stringsample %%&#39;)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+1 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>ltrim</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>__#__stringsample %%</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#BUSCARA el caracter espacio desde la izquierda y los eliminara</span>
+<span class="o">%</span><span class="k">sql</span> SELECT LTRIM( &#39;  stringsample %%&#39;)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+1 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>ltrim</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>stringsample %%</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT RTRIM( &#39;stringsample %%   &#39;)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+1 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>rtrim</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>stringsample %%</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#aggrega a su izquierda x cantidad de dash&#39;s para resultar en 15 caracteres finales</span>
+<span class="o">%</span><span class="k">sql</span> SELECT LPAD(&#39;pad&#39;,15, &#39;\&#39;)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+1 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>lpad</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>\\\\\\\\\\\\pad</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="Working_with_DATETIME_Functions_and_Operators.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Common Data Types</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="Full-text_Search_and_PostgresSQL_Extensions.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Full-text Search and PostgresSQL Extensions</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By github.com/aldeherr<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

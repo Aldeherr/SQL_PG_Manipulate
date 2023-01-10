@@ -1,0 +1,1551 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Full-text Search and PostgresSQL Extensions &#8212; Functions for Manipulating Data in PostgreSQL</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Parsing and Manipulating Text" href="Parsing_and_Manipulating_Text.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Functions for Manipulating Data in PostgreSQL</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Bienvenido al Curso de Functions for Manipulating Data in PostgreSQL 
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Overview_of_basic_arithmetic_operators.html">
+   Date/Time Functions and Operators
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Working_with_DATETIME_Functions_and_Operators.html">
+   Common Data Types
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Parsing_and_Manipulating_Text.html">
+   Parsing and Manipulating Text
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Full-text Search and PostgresSQL Extensions
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/docs/Full-text_Search_and_PostgresSQL_Extensions.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/executablebooks/jupyter-book"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FFull-text_Search_and_PostgresSQL_Extensions.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/Full-text_Search_and_PostgresSQL_Extensions.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#intro-to-to-full-text-search">
+   Intro to to full-text search
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#funcionalidades-extendidas-de-postgresql">
+   Funcionalidades Extendidas de PostgreSQL
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#enumerate-data-type">
+     Enumerate DATA TYPE
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#funciones-definidas-por-el-usuario">
+     Funciones definidas por el usuario
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#intro-to-postgresql-extensions">
+     Intro to PostgreSQL extensions
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#fuzzysrtmatch">
+       FUZZYSRTMATCH
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#pg-trgm">
+       Pg_trgm
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Full-text Search and PostgresSQL Extensions</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#intro-to-to-full-text-search">
+   Intro to to full-text search
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#funcionalidades-extendidas-de-postgresql">
+   Funcionalidades Extendidas de PostgreSQL
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#enumerate-data-type">
+     Enumerate DATA TYPE
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#funciones-definidas-por-el-usuario">
+     Funciones definidas por el usuario
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#intro-to-postgresql-extensions">
+     Intro to PostgreSQL extensions
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#fuzzysrtmatch">
+       FUZZYSRTMATCH
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#pg-trgm">
+       Pg_trgm
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <hr class="docutils" />
+<section id="full-text-search-and-postgressql-extensions">
+<h1>Full-text Search and PostgresSQL Extensions<a class="headerlink" href="#full-text-search-and-postgressql-extensions" title="Permalink to this headline">#</a></h1>
+<hr class="docutils" />
+<section id="intro-to-to-full-text-search">
+<h2>Intro to to full-text search<a class="headerlink" href="#intro-to-to-full-text-search" title="Permalink to this headline">#</a></h2>
+<p>Para buscar cadenas de texto sobre campos podemos utilizar la clasula de LIKE, sin embargo, esta posee algunas desventajas.</p>
+<ul class="simple">
+<li><p>Necesitamos utlizar el operador <strong>‘%’</strong>.</p></li>
+<li><p>Cuando comparamos cadenas de texto las mismas deben ser implicitas.</p></li>
+<li><p>Esto hace que las variaciones de texto con capital case sean inumerables. E.g ‘cold’ != ‘Cold’</p></li>
+</ul>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Esta consulta no matcheara con goLd, golD, GOld</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span>
+<span class="w">        </span><span class="n">title</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">film</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%Gold&#39;</span>
+</pre></div>
+</div>
+<p>Por esta razon podemos realizar una busqueda FULL-TEXT. Una <strong>Full-Text Search</strong> proporciona un medio para realizar consultas documentos de lenguaje natural que localizan el mejor match en un query. El tipo de dato <code class="docutils literal notranslate"><span class="pre">TSVECTOR</span></code> representa un documento en un formato optimizado para realizar busquedas de texto, por otra parte, tsquery es un type que representa un texto de consulta o <strong>text query</strong>.</p>
+<hr class="docutils" />
+<p>LINEAS DE CONFG</p>
+<hr class="docutils" />
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlalchemy</span> <span class="k">as</span> <span class="nn">sqla</span>
+
+<span class="n">engine</span> <span class="o">=</span> <span class="n">sqla</span><span class="o">.</span><span class="n">create_engine</span><span class="p">(</span><span class="s1">&#39;postgresql://postgres:Panama2021@localhost:5433/dvdrental&#39;</span><span class="p">)</span>
+
+<span class="o">%</span><span class="k">load_ext</span> sql
+<span class="o">%</span><span class="k">sql</span> $engine.url
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Connected: postgres@dvdrental&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT title, description FROM film WHERE to_tsvector(title) @@ tsquery(&#39;elf&#39;)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+3 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>title</th>
+            <th>description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Elf Murder</td>
+            <td>A Action-Packed Story of a Frisbee And a Woman who must Reach a Girl in An Abandoned Mine Shaft</td>
+        </tr>
+        <tr>
+            <td>Encino Elf</td>
+            <td>A Astounding Drama of a Feminist And a Teacher who must Confront a Husband in A Baloon</td>
+        </tr>
+        <tr>
+            <td>Ghostbusters Elf</td>
+            <td>A Thoughtful Epistle of a Dog And a Feminist who must Chase a Composer in Berlin</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT title, description description FROM film WHERE to_tsvector(title) @@ to_tsquery(&#39;man&#39;)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+0 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>title</th>
+            <th>description</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT title, description description FROM film WHERE title LIKE &#39;%man%&#39;
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+28 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>title</th>
+            <th>description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Agent Truman</td>
+            <td>A Intrepid Panorama of a Robot And a Boy who must Escape a Sumo Wrestler in Ancient China</td>
+        </tr>
+        <tr>
+            <td>Anonymous Human</td>
+            <td>A Amazing Reflection of a Database Administrator And a Astronaut who must Outrace a Database Administrator in A Shark Tank</td>
+        </tr>
+        <tr>
+            <td>Badman Dawn</td>
+            <td>A Emotional Panorama of a Pioneer And a Composer who must Escape a Mad Scientist in A Jet Boat</td>
+        </tr>
+        <tr>
+            <td>Braveheart Human</td>
+            <td>A Insightful Story of a Dog And a Pastry Chef who must Battle a Girl in Berlin</td>
+        </tr>
+        <tr>
+            <td>Bulworth Commandments</td>
+            <td>A Amazing Display of a Mad Cow And a Pioneer who must Redeem a Sumo Wrestler in The Outback</td>
+        </tr>
+        <tr>
+            <td>Comancheros Enemy</td>
+            <td>A Boring Saga of a Lumberjack And a Monkey who must Find a Monkey in The Gulf of Mexico</td>
+        </tr>
+        <tr>
+            <td>Command Darling</td>
+            <td>A Awe-Inspiring Tale of a Forensic Psychologist And a Woman who must Challenge a Database Administrator in Ancient Japan</td>
+        </tr>
+        <tr>
+            <td>Commandments Express</td>
+            <td>A Fanciful Saga of a Student And a Mad Scientist who must Battle a Hunter in An Abandoned Mine Shaft</td>
+        </tr>
+        <tr>
+            <td>Drifter Commandments</td>
+            <td>A Epic Reflection of a Womanizer And a Squirrel who must Discover a Husband in A Jet Boat</td>
+        </tr>
+        <tr>
+            <td>Forrester Comancheros</td>
+            <td>A Fateful Tale of a Squirrel And a Forensic Psychologist who must Redeem a Man in Nigeria</td>
+        </tr>
+        <tr>
+            <td>Human Graffiti</td>
+            <td>A Beautiful Reflection of a Womanizer And a Sumo Wrestler who must Chase a Database Administrator in The Gulf of Mexico</td>
+        </tr>
+        <tr>
+            <td>Jumanji Blade</td>
+            <td>A Intrepid Yarn of a Husband And a Womanizer who must Pursue a Mad Scientist in New Orleans</td>
+        </tr>
+        <tr>
+            <td>Mars Roman</td>
+            <td>A Boring Drama of a Car And a Dog who must Succumb a Madman in Soviet Georgia</td>
+        </tr>
+        <tr>
+            <td>Lover Truman</td>
+            <td>A Emotional Yarn of a Robot And a Boy who must Outgun a Technical Writer in A U-Boat</td>
+        </tr>
+        <tr>
+            <td>Matrix Snowman</td>
+            <td>A Action-Packed Saga of a Womanizer And a Woman who must Overcome a Student in California</td>
+        </tr>
+        <tr>
+            <td>Minds Truman</td>
+            <td>A Taut Yarn of a Mad Scientist And a Crocodile who must Outgun a Database Administrator in A Monastery</td>
+        </tr>
+        <tr>
+            <td>Montezuma Command</td>
+            <td>A Thrilling Reflection of a Waitress And a Butler who must Battle a Butler in A Jet Boat</td>
+        </tr>
+        <tr>
+            <td>Mystic Truman</td>
+            <td>A Epic Yarn of a Teacher And a Hunter who must Outgun a Explorer in Soviet Georgia</td>
+        </tr>
+        <tr>
+            <td>Oklahoma Jumanji</td>
+            <td>A Thoughtful Drama of a Dentist And a Womanizer who must Meet a Husband in The Sahara Desert</td>
+        </tr>
+        <tr>
+            <td>Patriot Roman</td>
+            <td>A Taut Saga of a Robot And a Database Administrator who must Challenge a Astronaut in California</td>
+        </tr>
+        <tr>
+            <td>Pizza Jumanji</td>
+            <td>A Epic Saga of a Cat And a Squirrel who must Outgun a Robot in A U-Boat</td>
+        </tr>
+        <tr>
+            <td>Roman Punk</td>
+            <td>A Thoughtful Panorama of a Mad Cow And a Student who must Battle a Forensic Psychologist in Berlin</td>
+        </tr>
+        <tr>
+            <td>Room Roman</td>
+            <td>A Awe-Inspiring Panorama of a Composer And a Secret Agent who must Sink a Composer in A Shark Tank</td>
+        </tr>
+        <tr>
+            <td>Rules Human</td>
+            <td>A Beautiful Epistle of a Astronaut And a Student who must Confront a Monkey in An Abandoned Fun House</td>
+        </tr>
+        <tr>
+            <td>Snowman Rollercoaster</td>
+            <td>A Fateful Display of a Lumberjack And a Girl who must Succumb a Mad Cow in A Manhattan Penthouse</td>
+        </tr>
+        <tr>
+            <td>Tenenbaums Command</td>
+            <td>A Taut Display of a Pioneer And a Man who must Reach a Girl in The Gulf of Mexico</td>
+        </tr>
+        <tr>
+            <td>Treasure Command</td>
+            <td>A Emotional Saga of a Car And a Madman who must Discover a Pioneer in California</td>
+        </tr>
+        <tr>
+            <td>Truman Crazy</td>
+            <td>A Thrilling Epistle of a Moose And a Boy who must Meet a Database Administrator in A Monastery</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+</section>
+<section id="funcionalidades-extendidas-de-postgresql">
+<h2>Funcionalidades Extendidas de PostgreSQL<a class="headerlink" href="#funcionalidades-extendidas-de-postgresql" title="Permalink to this headline">#</a></h2>
+<section id="enumerate-data-type">
+<h3>Enumerate DATA TYPE<a class="headerlink" href="#enumerate-data-type" title="Permalink to this headline">#</a></h3>
+<p>PostgreSQL nos permite crear tipos de datos personalizados; en algunos casos vemos necesario crear este tipo de customizacion una vez veamos que los datos no cambian. E.g crearemos el tipo de dato <code class="docutils literal notranslate"><span class="pre">dayweek</span></code>; sabiendo que los dias de la semana no cambian. Para crear un tipo de dato personalizado haremos uso del keyword <code class="docutils literal notranslate"><span class="pre">ENUM</span></code>.</p>
+<div class="highlight-SQL notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="n">name_new_type</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ENUM</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="s1">&#39;TIPE_1&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="s1">&#39;TIPE_2&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="s1">&#39;TIPE_3&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="s1">&#39;TIPE_4&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Crearemos el tipo de dato dayweek</span>
+<span class="o">%</span><span class="k">sql</span> CREATE TYPE dayweek \
+    <span class="n">AS</span> <span class="n">ENUM</span> <span class="p">(</span><span class="s1">&#39;Monday&#39;</span><span class="p">,</span> <span class="s1">&#39;Tuesday&#39;</span><span class="p">,</span> <span class="s1">&#39;Wednesday&#39;</span><span class="p">,</span> <span class="s1">&#39;Thursday&#39;</span><span class="p">,</span> <span class="s1">&#39;Friday&#39;</span><span class="p">,</span> <span class="s1">&#39;Saturday&#39;</span><span class="p">,</span> <span class="s1">&#39;Sunday&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+(psycopg2.errors.DuplicateObject) type &quot;dayweek&quot; already exists
+
+[SQL: CREATE TYPE dayweek      AS ENUM (&#39;Monday&#39;, &#39;Tuesday&#39;, &#39;Wednesday&#39;, &#39;Thursday&#39;, &#39;Friday&#39;, &#39;Saturday&#39;, &#39;Sunday&#39;)]
+(Background on this error at: http://sqlalche.me/e/13/f405)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Agregaremos una nueva columna con el tipo de dato dayweek</span>
+<span class="o">%</span><span class="k">sql</span> ALTER TABLE film ADD COLUMN day_name dayweek
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+(psycopg2.errors.DuplicateColumn) column &quot;day_name&quot; of relation &quot;film&quot; already exists
+
+[SQL: ALTER TABLE film ADD COLUMN day_name dayweek]
+(Background on this error at: http://sqlalche.me/e/13/f405)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Agregaremos los valores Monday para el fim con id =1 el Martes para el film = 2....etc</span>
+<span class="o">%</span><span class="k">sql</span> UPDATE film SET day_name = &#39;Monday&#39; WHERE film_id = 1; UPDATE film SET day_name = &#39;Tuesday&#39; WHERE film_id = 2; UPDATE film SET day_name = &#39;Wednesday&#39; WHERE film_id = 3; UPDATE film SET day_name = &#39;Thursday&#39; WHERE film_id = 4  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+1 rows affected.
+1 rows affected.
+1 rows affected.
+1 rows affected.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Resultado</span>
+<span class="o">%</span><span class="k">sql</span> SELECT film_id, title, day_name FROM film WHERE film_id BETWEEN 1 AND 5
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+5 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>film_id</th>
+            <th>title</th>
+            <th>day_name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>Academy Dinosaur</td>
+            <td>Monday</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Ace Goldfinger</td>
+            <td>Tuesday</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Adaptation Holes</td>
+            <td>Wednesday</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Affair Prejudice</td>
+            <td>Thursday</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>African Egg</td>
+            <td>None</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<p><strong>Obtener Info</strong></p>
+<p>Para obtener informacion sobre el tipo de datos podemos utilizar la TABLA [<code class="docutils literal notranslate"><span class="pre">INFORMATION_SCHEMA</span></code>], o tambien podemos usar <code class="docutils literal notranslate"><span class="pre">pg_type</span></code> que veremos determinado con la LETRA <strong>E</strong> en la columna <strong>TYPCATEGORY</strong>, esto nos indica que es un dato de tipo <code class="docutils literal notranslate"><span class="pre">ENUM</span></code> como previamente lo establecimos en el tipo de dato.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT column_name, data_type, udt_name \
+    <span class="n">FROM</span> <span class="n">INFORMATION_SCHEMA</span><span class="o">.</span><span class="n">COLUMNS</span> \
+    <span class="n">WHERE</span> <span class="n">table_name</span> <span class="o">=</span> <span class="s1">&#39;film&#39;</span> \
+    <span class="n">LIMIT</span> <span class="mi">14</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+14 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>column_name</th>
+            <th>data_type</th>
+            <th>udt_name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>day_name</td>
+            <td>USER-DEFINED</td>
+            <td>dayweek</td>
+        </tr>
+        <tr>
+            <td>last_update</td>
+            <td>timestamp without time zone</td>
+            <td>timestamp</td>
+        </tr>
+        <tr>
+            <td>fulltext</td>
+            <td>tsvector</td>
+            <td>tsvector</td>
+        </tr>
+        <tr>
+            <td>film_id</td>
+            <td>integer</td>
+            <td>int4</td>
+        </tr>
+        <tr>
+            <td>release_year</td>
+            <td>integer</td>
+            <td>int4</td>
+        </tr>
+        <tr>
+            <td>language_id</td>
+            <td>smallint</td>
+            <td>int2</td>
+        </tr>
+        <tr>
+            <td>rental_duration</td>
+            <td>smallint</td>
+            <td>int2</td>
+        </tr>
+        <tr>
+            <td>rental_rate</td>
+            <td>numeric</td>
+            <td>numeric</td>
+        </tr>
+        <tr>
+            <td>length</td>
+            <td>smallint</td>
+            <td>int2</td>
+        </tr>
+        <tr>
+            <td>replacement_cost</td>
+            <td>numeric</td>
+            <td>numeric</td>
+        </tr>
+        <tr>
+            <td>rating</td>
+            <td>USER-DEFINED</td>
+            <td>mpaa_rating</td>
+        </tr>
+        <tr>
+            <td>title</td>
+            <td>character varying</td>
+            <td>varchar</td>
+        </tr>
+        <tr>
+            <td>description</td>
+            <td>text</td>
+            <td>text</td>
+        </tr>
+        <tr>
+            <td>special_features</td>
+            <td>ARRAY</td>
+            <td>_text</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT typname, typcategory FROM pg_type WHERE typname=&#39;dayweek&#39;
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+1 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>typname</th>
+            <th>typcategory</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>dayweek</td>
+            <td>E</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+</section>
+<section id="funciones-definidas-por-el-usuario">
+<h3>Funciones definidas por el usuario<a class="headerlink" href="#funciones-definidas-por-el-usuario" title="Permalink to this headline">#</a></h3>
+<p>Una <strong>USER-DEFINED FUNCTIONS</strong> (funcion definida por el usuario) es el equivalente a un procedimiento almacenado en POSTGRESQL. En la cual podemos empaquetar varias consultas y sentencias SQL en <strong>UN SOLO PAQUETE</strong>, solo hace ejecutar crear el comando <strong>CREATE FUNCTION.</strong></p>
+<p>Definamos una funcion que devuelve el cuadrado de un numero….</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#DEFINIMOS LA FUNCION
+%sql CREATE FUNCTION squared(i integer) RETURNS integer AS $$ \
+    BEGIN \
+        return i*i; \
+    END; $$ LANGUAGE plpgsql;  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+(psycopg2.errors.DuplicateFunction) function &quot;squared&quot; already exists with same argument types
+
+[SQL: CREATE FUNCTION squared(i integer) RETURNS integer AS $$      BEGIN          return i*i;      END; $$ LANGUAGE plpgsql;]
+(Background on this error at: http://sqlalche.me/e/13/f405)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#LLAMAMOS LA FUNCION</span>
+<span class="o">%</span><span class="k">sql</span> SELECT squared(8)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+1 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>squared</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>64</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<p>La base de datos <code class="docutils literal notranslate"><span class="pre">DVD</span> <span class="pre">RENTAL</span></code> incorpora por defecto algunas funciones previamente creadas.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">get_customer_balance</span> <span class="pre">(customer_id,</span> <span class="pre">effective_data)</span></code>: calcula el balance total de un cliente de un cliente dado.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inventory_held_by_customer</span> <span class="pre">(inventory_id)</span></code>: retorna el id del cliente que actualmente tiene rentado el inventario con el id proporcionado.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inventory_in_stock(inventory_id)</span></code>: retorna un valor booleano en dependenca si el item del inventario esta actualmente en stock.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># RETORNA EL ID del cliente que contiene LA pelicula rentada actualmente</span>
+<span class="o">%</span><span class="k">sql</span> SELECT INVENTORY_HELD_BY_CUSTOMER(1435)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+1 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>inventory_held_by_customer</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>405</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Nos devolvera true si la pelicula esta disponible o False si no esta disponible</span>
+<span class="o">%</span><span class="k">sql</span> SELECT inventory_in_stock(830)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+1 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>inventory_in_stock</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>True</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Aprovecharemos la funcion held_by_customer para rertornar las films alquilados junto al id del customer</span>
+<span class="o">%</span><span class="k">sql</span> SELECT \
+	<span class="n">f</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> \
+    <span class="n">i</span><span class="o">.</span><span class="n">inventory_id</span><span class="p">,</span> \
+    <span class="n">inventory_held_by_customer</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">inventory_id</span><span class="p">)</span> <span class="k">as</span> <span class="n">held_by_cust</span> \
+<span class="n">FROM</span> <span class="n">film</span> <span class="k">as</span> <span class="n">f</span> \
+	<span class="n">INNER</span> <span class="n">JOIN</span> <span class="n">inventory</span> <span class="n">AS</span> <span class="n">i</span> <span class="n">ON</span> <span class="n">f</span><span class="o">.</span><span class="n">film_id</span><span class="o">=</span><span class="n">i</span><span class="o">.</span><span class="n">film_id</span> \
+<span class="n">WHERE</span> \
+    <span class="n">inventory_held_by_customer</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">inventory_id</span><span class="p">)</span> <span class="n">IS</span> <span class="n">NOT</span> <span class="n">NULL</span> \
+<span class="n">LIMIT</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+10 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>title</th>
+            <th>inventory_id</th>
+            <th>held_by_cust</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Academy Dinosaur</td>
+            <td>6</td>
+            <td>554</td>
+        </tr>
+        <tr>
+            <td>Ace Goldfinger</td>
+            <td>9</td>
+            <td>366</td>
+        </tr>
+        <tr>
+            <td>Affair Prejudice</td>
+            <td>21</td>
+            <td>111</td>
+        </tr>
+        <tr>
+            <td>African Egg</td>
+            <td>25</td>
+            <td>590</td>
+        </tr>
+        <tr>
+            <td>Ali Forever</td>
+            <td>70</td>
+            <td>108</td>
+        </tr>
+        <tr>
+            <td>Alone Trip</td>
+            <td>81</td>
+            <td>236</td>
+        </tr>
+        <tr>
+            <td>Amadeus Holy</td>
+            <td>97</td>
+            <td>512</td>
+        </tr>
+        <tr>
+            <td>American Circus</td>
+            <td>106</td>
+            <td>44</td>
+        </tr>
+        <tr>
+            <td>Amistad Midsummer</td>
+            <td>112</td>
+            <td>349</td>
+        </tr>
+        <tr>
+            <td>Armageddon Lost</td>
+            <td>177</td>
+            <td>317</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+</section>
+<section id="intro-to-postgresql-extensions">
+<h3>Intro to PostgreSQL extensions<a class="headerlink" href="#intro-to-postgresql-extensions" title="Permalink to this headline">#</a></h3>
+<p align="center">
+<img src="https://pbs.twimg.com/media/FgAawu-VsAAr7df.jpg:large" width="500"></img>
+</p>
+Al igual que muchas herramientas informaticas POSTGRESQL incopora extensiones que nos permiten trabajar con imagenes, ubicaciones geograficas o busquedas de texto. Algunas extensiones de uso comun son
+<ul class="simple">
+<li><p>PostGIS: soportar objetos geo espaciales agregando la funcionalidad de ejecutar queries con respecto a ubicaciones geograficas.</p></li>
+<li><p>PostPic: permite el procesamiento de imagenes dentro de la base de datos</p></li>
+<li><p>fuzzystrmatch: agrega funcionalidades de tipo full text search</p></li>
+<li><p>pg_trgm: agrega funcionalidades de tipo full text search</p></li>
+</ul>
+<p>Para verificar que extensiones se encuentran disponibles para utilizar especificamente en la distribucion de nuestro mortor de POSTGRESQL, debemos consultar la tabla <code class="docutils literal notranslate"><span class="pre">pg_avaliable_extensions</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT name FROM pg_available_extensions\
+    <span class="n">LIMIT</span> <span class="mi">20</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+20 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>adminpack</td>
+        </tr>
+        <tr>
+            <td>amcheck</td>
+        </tr>
+        <tr>
+            <td>autoinc</td>
+        </tr>
+        <tr>
+            <td>bloom</td>
+        </tr>
+        <tr>
+            <td>bool_plperl</td>
+        </tr>
+        <tr>
+            <td>bool_plperlu</td>
+        </tr>
+        <tr>
+            <td>btree_gin</td>
+        </tr>
+        <tr>
+            <td>btree_gist</td>
+        </tr>
+        <tr>
+            <td>citext</td>
+        </tr>
+        <tr>
+            <td>cube</td>
+        </tr>
+        <tr>
+            <td>dblink</td>
+        </tr>
+        <tr>
+            <td>dict_int</td>
+        </tr>
+        <tr>
+            <td>dict_xsyn</td>
+        </tr>
+        <tr>
+            <td>dummy_index_am</td>
+        </tr>
+        <tr>
+            <td>earthdistance</td>
+        </tr>
+        <tr>
+            <td>file_fdw</td>
+        </tr>
+        <tr>
+            <td>fuzzystrmatch</td>
+        </tr>
+        <tr>
+            <td>hstore</td>
+        </tr>
+        <tr>
+            <td>hstore_plperl</td>
+        </tr>
+        <tr>
+            <td>hstore_plperlu</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<p>Para verificar que extensiones se encuentran YA instaladas y listas para su uso podemos utilizar la tabla <code class="docutils literal notranslate"><span class="pre">PG_EXTENSION</span></code>. En este caso solo tenemos la extension <strong>plpgsql</strong> instalada.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT extname \
+    <span class="n">FROM</span> <span class="n">pg_extension</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+3 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>extname</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>plpgsql</td>
+        </tr>
+        <tr>
+            <td>fuzzystrmatch</td>
+        </tr>
+        <tr>
+            <td>pg_trgm</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<p>Para cargar cualquiera de las extensiones que sean arrojadas por la tabla <code class="docutils literal notranslate"><span class="pre">pg_available_extensions</span></code>, debemos ejecutar el keyword <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">EXTENSION</span></code> por ejemplo junto con el nombre de la extension deseada.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Utilizamos IF NOT EXISTS para corroborar que no se encuentra habilitada de lo contrario arrojara un error</span>
+<span class="o">%</span><span class="k">sql</span> CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Done.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Confirmamos que fuzzystrmatch ha sido habilitada</span>
+<span class="o">%</span><span class="k">sql</span> SELECT extname FROM pg_extension;
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+3 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>extname</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>plpgsql</td>
+        </tr>
+        <tr>
+            <td>fuzzystrmatch</td>
+        </tr>
+        <tr>
+            <td>pg_trgm</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<section id="fuzzysrtmatch">
+<h4>FUZZYSRTMATCH<a class="headerlink" href="#fuzzysrtmatch" title="Permalink to this headline">#</a></h4>
+<p>Utilizaremos la funcion <code class="docutils literal notranslate"><span class="pre">levenshtein</span></code> para medir la distancia entre dos cadenas de texto, levenshtein retorna que la distancia entre <code class="docutils literal notranslate"><span class="pre">PURO</span></code> Y <code class="docutils literal notranslate"><span class="pre">PULGA</span></code> es = 3 porque se requiere realizar los siguientes pasos.</p>
+<ol class="simple">
+<li><p>Eliminar L</p></li>
+<li><p>Reemplazar la A por la O</p></li>
+<li><p>Reemplazar la G por la R</p></li>
+</ol>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">levenshtein</span><span class="p">(</span><span class="n">source_strng</span><span class="p">,</span><span class="w"> </span><span class="n">comparator_string</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT levenshtein(&#39;PURO&#39;,&#39;PULGA&#39;)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+1 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>levenshtein</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>3</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+</section>
+<section id="pg-trgm">
+<h4>Pg_trgm<a class="headerlink" href="#pg-trgm" title="Permalink to this headline">#</a></h4>
+<p>Usaremos la funcion <code class="docutils literal notranslate"><span class="pre">similarity</span></code> que pertenece a la extension <code class="docutils literal notranslate"><span class="pre">pg_trgm</span></code>. Similarity busca coincidir <code class="docutils literal notranslate"><span class="pre">trigrams</span></code> (Trigramas) siendo un trigrama un grupo de 3 caracteres consecutivos; basando el resultado retornado, en el numero de trigramas encontrado entre dos cadena de textos.</p>
+<p>Similarity devuelve un numero entre 0 y 1, siendo 1 un match perfecto y 0 ningun trigrama encontrado.</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">similarity</span><span class="p">(</span><span class="w"> </span><span class="n">source_strng</span><span class="p">,</span><span class="w"> </span><span class="n">comparator_string</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">sql</span> SELECT name from pg_available_extensions \
+    <span class="n">WHERE</span> <span class="n">name</span> <span class="n">LIKE</span> <span class="s1">&#39;%pg%&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+11 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>pgcrypto</td>
+        </tr>
+        <tr>
+            <td>pgrowlocks</td>
+        </tr>
+        <tr>
+            <td>pgstattuple</td>
+        </tr>
+        <tr>
+            <td>pg_buffercache</td>
+        </tr>
+        <tr>
+            <td>pg_freespacemap</td>
+        </tr>
+        <tr>
+            <td>pg_prewarm</td>
+        </tr>
+        <tr>
+            <td>pg_stat_statements</td>
+        </tr>
+        <tr>
+            <td>pg_trgm</td>
+        </tr>
+        <tr>
+            <td>pg_visibility</td>
+        </tr>
+        <tr>
+            <td>plpgsql</td>
+        </tr>
+        <tr>
+            <td>test_pg_dump</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Primero habilitemos la extension pg_trgm</span>
+<span class="o">%</span><span class="k">sql</span> CREATE EXTENSION IF NOT EXISTS pg_trgm
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+Done.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Verifiquemos que este habilitada la ext pg_trgm</span>
+<span class="o">%</span><span class="k">sql</span> SELECT * FROM pg_extension
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+3 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>oid</th>
+            <th>extname</th>
+            <th>extowner</th>
+            <th>extnamespace</th>
+            <th>extrelocatable</th>
+            <th>extversion</th>
+            <th>extconfig</th>
+            <th>extcondition</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>13428</td>
+            <td>plpgsql</td>
+            <td>10</td>
+            <td>11</td>
+            <td>False</td>
+            <td>1.0</td>
+            <td>None</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td>33138</td>
+            <td>fuzzystrmatch</td>
+            <td>10</td>
+            <td>2200</td>
+            <td>True</td>
+            <td>1.1</td>
+            <td>None</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td>33149</td>
+            <td>pg_trgm</td>
+            <td>10</td>
+            <td>2200</td>
+            <td>True</td>
+            <td>1.5</td>
+            <td>None</td>
+            <td>None</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Usemos la funcion similarity</span>
+<span class="o">%</span><span class="k">sql</span> SELECT similarity(&#39;Manuel&#39;,&#39;Manntequilla&#39;)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * postgresql://postgres:***@localhost:5433/dvdrental
+1 rows affected.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+    <thead>
+        <tr>
+            <th>similarity</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0.1764706</td>
+        </tr>
+    </tbody>
+</table></div></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="Parsing_and_Manipulating_Text.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Parsing and Manipulating Text</p>
+        </div>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By github.com/aldeherr<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
